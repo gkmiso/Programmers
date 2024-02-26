@@ -1,27 +1,26 @@
 function solution(begin, target, words) {
     let answer = 0;
-    let visit = [];
-    let queue = [];
-    if(!words.includes(target)) return 0;
-    queue.push([begin,answer]);
+    const q = [];
+    const visit = Array(words.length);
     
-    while(queue) {
-        let [v, cnt] = queue.shift();
-        if (v === target) {
-            return cnt;
-        }
-        words.forEach(word => {
-            let notEqual = 0;
-            if (visit.includes(word)) return;
-            for (let i = 0; i < word.length; i++) {
-                if (word[i] !== v[i]) {
-                    notEqual++;
-                }
+    q.push([begin, answer]);
+    
+    while (q.length) {
+        let [s, cnt] = q.shift();
+
+        if (s == target) return cnt;
+        
+        words.forEach((w, i) => {
+            // words의 단어들인 w와 begin의 문자를 비교하여 서로 다른 부분의 인덱스들을 구한다.
+            const idx = [...w].reduce((a, c, i) => (c != s[i] ? a.push(i) : a, a), []);
+
+            // words와 begin이 1개의 문자가 다르고 방문하지 않은 경우(변환된 문자가 아닌 경우)
+            if (idx.length == 1 && !visit[i]) {
+                visit[i] = 1;
+                q.push([w, ++cnt]);
             }
-            if (notEqual === 1) {
-                queue.push([word, ++cnt]);
-                visit.push(word);
-            }
-        });
+        })
     }
+    
+    return answer;
 }
