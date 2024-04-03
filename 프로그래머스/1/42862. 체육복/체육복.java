@@ -1,5 +1,4 @@
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
